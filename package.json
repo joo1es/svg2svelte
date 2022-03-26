@@ -1,28 +1,32 @@
 {
-  "name": "svg2vue",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/joo1es/svg2vue.git"
-  },
-  "keywords": [
-    "svg",
-    "vue"
-  ],
-  "author": "jooies",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/joo1es/svg2vue/issues"
-  },
-  "homepage": "https://github.com/joo1es/svg2vue#readme",
-  "dependencies": {
-    "fs-extra": "^10.0.1",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
-  }
+    "name": "svg2vue",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+        "start": "ts-node-esm index.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joo1es/svg2vue.git"
+    },
+    "keywords": [
+        "svg",
+        "vue"
+    ],
+    "author": "jooies",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/joo1es/svg2vue/issues"
+    },
+    "homepage": "https://github.com/joo1es/svg2vue#readme",
+    "dependencies": {
+        "@types/fs-extra": "^9.0.13",
+        "@types/inquirer": "^8.2.0",
+        "fs-extra": "^10.0.1",
+        "inquirer": "^8.2.2",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.6.3"
+    },
+    "type": "module"
 }
