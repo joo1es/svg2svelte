@@ -86,5 +86,5 @@ export default defineComponent({
 }
 
 function toUpperCamelCase (str: string) {
-    return str.replace(/[-_]([a-z\d])/g, (g) => g[1]?.toUpperCase()).replace(/^./, (g) => g?.toUpperCase() || g)
+    return str.replace(/[-_]([A-Za-z\d])/g, (g) => g[1]?.toUpperCase()).replace(/^./, (g) => g?.toUpperCase() || g)
 }
