@@ -38,6 +38,21 @@ for (const svg of svgs) {
 fs.writeFileSync(`./dist/index.${answers.lang === 'typescript' ? 'ts' : 'mjs'}`, indexArray.join('\n'))
 
 function getTemplate (name: string, svg: string) {
+    const ids = svg.matchAll(/id=\"(.+?)\"/g)
+    const data: [string, string][] = []
+    let count = 0
+    for (const id of ids) {
+        if (!id[1]) continue
+        const currentId = `id${count}`
+        svg = svg.replace(id[0], `:id="${currentId}"`)
+        svg = svg.replace(new RegExp(` ([a-z]+?)="url\\(#${id[1]}\\)"`, 'g'), ` :$1="'url(#' + ${currentId} + ')'"`)
+        data.push([currentId, `'${id[1]}_' + Math.random().toString(36).slice(-10)`])
+        count += 1
+    }
+    const dataString = count > 0 ? `
+    data: () => ({
+        ${data.map(item => `${item[0]}: ${item[1]}`).join(', ')}
+    })` : ''
     return `<template>
     ${svg}
 </template>
@@ -46,7 +61,7 @@ function getTemplate (name: string, svg: string) {
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: '${name}'
+    name: '${name}',${dataString}
 })
 </script>`
 }
