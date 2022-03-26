@@ -38,9 +38,12 @@ for (const svg of svgs) {
 fs.writeFileSync(`./dist/index.${answers.lang === 'typescript' ? 'ts' : 'mjs'}`, indexArray.join('\n'))
 
 function getTemplate (name: string, svg: string) {
+    // only need svg part
+    svg = svg.replace(/^.*?(<svg (.*)<\/svg>).*?$/, '$1')
     const ids = svg.matchAll(/id=\"(.+?)\"/g)
     const data: [string, string][] = []
     let count = 0
+    // id should be unique
     for (const id of ids) {
         if (!id[1]) continue
         const currentId = `id${count}`
