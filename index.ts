@@ -34,8 +34,8 @@ for (const svg of svgs) {
 
     const name = toUpperCamelCase(svg.replace(/\.svg$/i, ''))
     const template = getTemplate(name, fs.readFileSync(`./src/${svg}`, 'utf8'))
-    fs.writeFileSync(`./dist/${name}.vue`, template)
-    indexArray.push(`export { default as ${name} } from './${name}.vue'`)
+    fs.writeFileSync(`./dist/${name}.svelte`, template)
+    indexArray.push(`export { default as ${name} } from './${name}.svelte'`)
 }
 
 fs.writeFileSync(`./dist/index.${answers.lang === 'typescript' ? 'ts' : 'mjs'}`, indexArray.join('\n'))
@@ -57,32 +57,18 @@ function getTemplate (name: string, svg: string) {
         if (!id[1]) continue
         const currentId = `id${count}`
         svg = svg
-            .replace(id[0], ` :id="${currentId}"`)
-            .replace(new RegExp(` ([a-z]+?)="url\\(#${id[1]}\\)"`, 'g'), ` :$1="'url(#' + ${currentId} + ')'"`)
+            .replace(id[0], ` id={${currentId}}`)
+            .replace(new RegExp(` ([a-z]+?)="url\\(#${id[1]}\\)"`, 'g'), ` $1={'url(#' + ${currentId} + ')'}`)
         data.push([currentId, `'${id[1]}_' + randomString`])
         count += 1
     }
 
-    const dataString = count > 0 ? `
-    data: () => {
-        const randomString = Math.random().toString(36).slice(-10)
-        return {
-            ${data.map(item => `${item[0]}: ${item[1]}`).join(', ')}
-        }
-    }` : ''
+    const dataString = count > 0 ? `const randomString = Math.random().toString(36).slice(-10)
+    ${data.map(item => `const ${item[0]} = ${item[1]}`).join('\n    ')}` : ''
 
-    return `<template>
-    ${svg}
-</template>
+    const script = dataString ? `<script ${answers.lang === 'typescript' ? 'lang="ts"' : ''}>\n    ${dataString}\n</script>\n\n` : ''
 
-<script ${answers.lang === 'typescript' ? 'lang="ts"' : ''}>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-    name: '${name}',${dataString}
-})
-</script>
-`
+    return script + svg + '\n'
 }
 
 function toUpperCamelCase (str: string) {

@@ -2,8 +2,8 @@ Install
 ---
 
 ```dash
-git clone git@github.com:joo1es/svg2vue.git
-cd svg2vue
+git clone git@github.com:joo1es/svg2svelte.git
+cd svg2svelte
 yarn
 ```
 
