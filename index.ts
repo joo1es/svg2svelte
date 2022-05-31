@@ -47,6 +47,8 @@ function getTemplate (name: string, svg: string) {
         .replace(/<style(.*)<\/style>/, '')
         .replace(/<script(.*)<\/script>/, '')
 
+    svg = svg.replace(/stroke:(.*?);/g, 'stroke:currentColor;')
+
     const ids = svg.matchAll(/ id=\"(.+?)\"/g)
 
     const data: [string, string][] = []
